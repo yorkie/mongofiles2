@@ -2,8 +2,6 @@
 
 var Mongolian = require('mongolian');
 var argv = require('minimist')(process.argv.slice(2));
-
-console.log(argv);
 var databaseName = argv.db;
 var collectionName = argv.collection || 'fs';
 
