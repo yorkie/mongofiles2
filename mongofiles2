@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+
+var Mongolian = require('mongolian');
+var argv = require('minimist')(process.argv.slice(2));
+
+console.log(argv);
+var databaseName = argv.db;
+var collectionName = argv.collection || 'fs';
+
+var db = new Mongolian('mongodb://localhost/'+databaseName);
+var gridfs = db.gridfs(collectionName);
+var command = argv._[0];
+
+switch (command) {
+  case 'list': list();break;
+  case 'get': get();break;
+}
+
+function list() {
+  gridfs.find().toArray(function(err, files) {
+    if (err) 
+      return console.error(err);
+    files.forEach(function(item) {
+      console.log(item.filename, '  ', item.chunkSize);
+    });
+    exit();
+  });
+}
+
+function get() {
+  gridfs.findOne(argv._[1], function(err, file) {
+    if (err)
+      return console.error(err);
+    file.readStream()
+      .on('end', exit)
+      .pipe(process.stdout);
+  });
+}
+
+function exit() {
+  process.stdout.write('\n');
+  process.exit();
+}
