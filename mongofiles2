@@ -12,12 +12,14 @@ var command = argv._[0];
 switch (command) {
   case 'list': list();break;
   case 'get': get();break;
+  case 'put': put();break;
 }
 
 function list() {
   gridfs.find().toArray(function(err, files) {
-    if (err) 
+    if (err) {
       return console.error(err);
+    }
     files.forEach(function(item) {
       console.log(item.filename, '  ', item.chunkSize);
     });
@@ -33,6 +35,15 @@ function get() {
       .on('end', exit)
       .pipe(process.stdout);
   });
+}
+
+function put() {
+  var file = gridfs.create({
+    filename: argv._[1],
+    contentType:"text/plain"
+  });
+  var stream = file.writeStream();
+  fs.createReadStream(argv._[1]).pipe(stream);
 }
 
 function exit() {

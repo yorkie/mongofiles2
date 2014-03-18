@@ -14,7 +14,7 @@ $ npm install mongofiles2 -g
 
 - [x] list
 - [x] get
-- [ ] put
+- [x] put
 - [ ] search
 
 ### Licesen
