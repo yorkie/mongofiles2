@@ -1,6 +1,6 @@
 {
   "name": "mongofiles2",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "improved mongofiles CLI",
   "main": "index.js",
   "bin": {
